@@ -1,0 +1,18 @@
+build:
+  only:
+  - main
+  script:
+  - docker login -u $CI_REGISTRY_USER -p $CI_JOB_TOKEN $CI_REGISTRY
+  - docker build -t $CI_REGISTRY_IMAGE:4.1 .
+  - docker push $CI_REGISTRY_IMAGE:4.1
+  stage: build
+deploy:
+  only:
+  - main
+  script:
+  - ssh user@remote-server "docker pull $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME &&
+    docker run -d $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME"
+  stage: deploy
+stages:
+- build
+- deploy
