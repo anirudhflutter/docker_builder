@@ -1,0 +1,16 @@
+build:
+  only:
+  - main
+  script:
+  - docker build -t my_r_image:4.1 .
+  - docker run my_r_image:4.1
+  stage: build
+deploy:
+  only:
+  - main
+  script:
+  - 'echo "Deploy phase: For example, run tests or start container."'
+  stage: deploy
+stages:
+- build
+- deploy
